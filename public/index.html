@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dosya Yöneticisi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📁 Dosya Yöneticisi</h1>
+    </header>
+
+    <div class="upload-section">
+      <div class="upload-box">
+        <input type="file" id="fileInput" hidden>
+        <button id="selectBtn" class="btn btn-primary">Dosya Seç</button>
+        <span id="fileName">Seçili dosya yok</span>
+      </div>
+      <button id="uploadBtn" class="btn btn-success" disabled>Yükle</button>
+    </div>
+
+    <div id="progressContainer" class="progress-container" style="display:none;">
+      <div class="progress-bar">
+        <div id="progressBar" class="progress-fill"></div>
+      </div>
+      <div class="progress-info">
+        <span id="progressPercent">0%</span>
+        <span id="progressSize">0 MB / 0 MB</span>
+      </div>
+    </div>
+
+    <div class="files-section">
+      <div class="section-header">
+        <h2>Dosyalar</h2>
+        <button id="refreshBtn" class="btn btn-secondary">🔄 Yenile</button>
+      </div>
+      <div id="filesList" class="files-list"></div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
