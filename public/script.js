@@ -211,41 +211,15 @@ function renderFiles() {
     const fileUrl = (currentPath === '/' ? '' : currentPath) + '/' + file.name;
     const escapedName = file.name.replace(/'/g, "\\'");
     const isDir = file.isDirectory;
-    const ext = isDir ? '' : (file.name.split('.').pop() || '').toLowerCase();
-    const isViewable = isDir ? false : viewableExts.includes(ext);
-    const isEditable = isDir ? false : editableExts.includes(ext);
-
-    let actionsHtml = '';
-    if (isDir) {
-      actionsHtml = `
-        <button class="btn btn-warning" onclick="event.stopPropagation(); window.renameFile('${escapedName}')">✏️</button>
-        <button class="btn btn-danger" onclick="event.stopPropagation(); window.deleteFile('${escapedName}')">🗑️</button>
-      `;
-    } else {
-      if (isViewable) {
-        actionsHtml += `<button class="btn btn-view" onclick="event.stopPropagation(); window.viewFile('${escapedName}')">👁️</button>`;
-      }
-      actionsHtml += `<button class="btn btn-info" onclick="event.stopPropagation(); window.downloadFile('${escapedName}')">⬇️</button>`;
-      if (isEditable) {
-        actionsHtml += `<button class="btn btn-warning" onclick="event.stopPropagation(); window.editFile('${escapedName}')">✏️</button>`;
-      }
-      actionsHtml += `
-        <button class="btn btn-warning" onclick="event.stopPropagation(); window.renameFile('${escapedName}')">📝</button>
-        <button class="btn btn-danger" onclick="event.stopPropagation(); window.deleteFile('${escapedName}')">🗑️</button>
-      `;
-    }
-
     const meta = isDir ? __t('folder') : formatFileSize(file.size);
+    const clickHandler = isDir ? `window.navigateTo('${fileUrl}')` : `window.viewFile('${escapedName}')`;
 
     return `
       <div class="file-item${isSelected ? ' selected' : ''}">
         <input type="checkbox" class="file-checkbox" data-name="${escapedName}" ${isSelected ? 'checked' : ''} onchange="event.stopPropagation(); window.toggleFile('${escapedName}', this.checked)">
-        <div class="file-info${isDir ? ' clickable' : ''}" ${isDir ? `onclick="window.navigateTo('${fileUrl}')"` : ''}>
+        <div class="file-info clickable" onclick="${clickHandler}">
           <div class="file-name">${isDir ? '📁' : '📄'} ${file.name}</div>
           <div class="file-meta">${meta} - ${formatDate(file.modified)}</div>
-        </div>
-        <div class="file-actions">
-          ${actionsHtml}
         </div>
       </div>
     `;
@@ -341,7 +315,7 @@ function isViewable(name) {
 }
 
 function viewFile(filename) {
-  window.open('/view/' + encodeURIComponent(filename) + qs(), '_blank');
+  window.location.href = '/view/' + encodeURIComponent(filename) + qs();
 }
 
 function downloadFile(filename) {
@@ -570,8 +544,7 @@ window.toggleFile = toggleFile;
 window.navigateTo = navigateTo;
 window.viewFile = viewFile;
 window.downloadFile = downloadFile;
-window.deleteFile = deleteFile;
-window.renameFile = renameFile;
+
 window.createFile = createFile;
 window.createFolder = createFolder;
 window.editFile = editFile;
