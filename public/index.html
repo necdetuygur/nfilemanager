@@ -34,7 +34,6 @@
           </div>
 
           <div id="toolbar" class="toolbar">
-            <button id="backBtn" class="btn btn-secondary toolbar-btn" style="display:none" data-i18n="parentDir">⬆️ Üst Dizin</button>
             <button class="btn btn-primary toolbar-btn" onclick="window.createFile()" data-i18n="newFile">📄 New File</button>
             <button class="btn btn-primary toolbar-btn" onclick="window.createFolder()" data-i18n="newFolder">📁 New Folder</button>
             <button class="btn btn-warning toolbar-btn" id="renameBtn" onclick="window.renameSelected()" disabled data-i18n="rename">✏️ Rename</button>
@@ -46,7 +45,10 @@
             <button class="btn btn-danger toolbar-btn" id="removeBtn" onclick="window.removeSelected()" disabled data-i18n="remove">🗑️ Remove</button>
           </div>
 
-          <div id="breadcrumb" class="breadcrumb"></div>
+          <div style="display:flex;align-items:center;gap:4px">
+            <button id="backBtn" class="breadcrumb-back-btn" style="display:none" data-i18n="parentDir">⬆️ Parent Directory</button>
+            <div id="breadcrumb" class="breadcrumb"></div>
+          </div>
         </div>
 
         <div class="sort-header">
