@@ -182,24 +182,17 @@ body {
   padding: 20px 30px;
 }
 
-.breadcrumb-row {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  margin-bottom: 12px;
-}
-
 .breadcrumb {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: 4px;
   font-size: 13px;
+  margin-bottom: 12px;
   padding: 6px 12px;
   background: #0f1a26;
   border-radius: 6px;
   font-family: monospace;
-  flex: 1;
 }
 
 .breadcrumb a {
@@ -211,24 +204,6 @@ body {
 }
 
 .breadcrumb a:hover {
-  background: #1e3040;
-  text-decoration: underline;
-}
-
-.breadcrumb-back-btn {
-  background: #0f1a26;
-  border: none;
-  color: #4299e1;
-  cursor: pointer;
-  padding: 6px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: monospace;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.breadcrumb-back-btn:hover {
   background: #1e3040;
   text-decoration: underline;
 }
