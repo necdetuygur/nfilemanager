@@ -3,9 +3,28 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const opts = { port: 3000, host: '0.0.0.0', root: process.cwd() };
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg.startsWith('--port=')) opts.port = parseInt(arg.split('=')[1], 10) || opts.port;
+    else if (arg === '--port' && args[i + 1] && !args[i + 1].startsWith('--')) opts.port = parseInt(args[++i], 10) || opts.port;
+    else if (arg.startsWith('--host=')) opts.host = arg.split('=')[1];
+    else if (arg === '--host' && args[i + 1] && !args[i + 1].startsWith('--')) opts.host = args[++i];
+    else if (arg.startsWith('--root=')) opts.root = path.resolve(arg.split('=')[1]);
+    else if (arg === '--root' && args[i + 1] && !args[i + 1].startsWith('--')) opts.root = path.resolve(args[++i]);
+    else if (arg.startsWith('--path=')) opts.root = path.resolve(arg.split('=')[1]);
+    else if (arg === '--path' && args[i + 1] && !args[i + 1].startsWith('--')) opts.root = path.resolve(args[++i]);
+  }
+  return opts;
+}
+
+const opts = parseArgs();
 const app = express();
-const port = process.argv[2] || 3000;
-const uploadDir = process.cwd();
+const port = opts.port;
+const host = opts.host;
+const uploadDir = opts.root;
 
 function safePath(queryPath) {
   const relative = (queryPath || "/").replace(/^\/+/, "");
@@ -274,9 +293,9 @@ app.post("/save/:filename", (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`\n🚀 Dosya Yöneticisi başlatıldı!`);
-  console.log(`📂 Dosya dizini: ${uploadDir}`);
-  console.log(`🌐 Web arayüzü: http://localhost:${port}`);
+app.listen(port, host, () => {
+  console.log(`\n🚀 nFileManager başlatıldı!`);
+  console.log(`📂 Kök dizin: ${uploadDir}`);
+  console.log(`🌐 Web arayüzü: http://${host}:${port}`);
   console.log(`\nKapatmak için Ctrl+C\n`);
 });
