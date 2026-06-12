@@ -5,7 +5,7 @@ const fileName = document.getElementById('fileName');
 const filesList = document.getElementById('filesList');
 const refreshBtn = document.getElementById('refreshBtn');
 const backBtn = document.getElementById('backBtn');
-const pathDisplay = document.getElementById('pathDisplay');
+
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
 const progressPercent = document.getElementById('progressPercent');
@@ -256,8 +256,6 @@ function renderFiles() {
 
 function loadFiles() {
   backBtn.style.display = currentPath === '/' ? 'none' : 'inline-block';
-
-  pathDisplay.textContent = currentPath === '/' ? __t('rootDir') : currentPath;
 
   fetch('/files' + qs())
     .then(res => res.json())
