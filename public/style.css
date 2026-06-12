@@ -305,7 +305,7 @@ h2 {
   padding: 10px 12px;
   border-radius: 8px;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   gap: 10px;
   align-items: center;
   border: 1px solid #1e3040;
@@ -354,17 +354,6 @@ h2 {
 .file-meta {
   font-size: 11px;
   color: #6a7a8a;
-}
-
-.file-actions {
-  display: flex;
-  gap: 6px;
-  flex-shrink: 0;
-}
-
-.file-actions .btn {
-  padding: 6px 12px;
-  font-size: 11px;
 }
 
 .empty-state {
@@ -427,16 +416,6 @@ h2 {
   .file-item {
     grid-template-columns: auto 1fr;
     gap: 8px;
-  }
-
-  .file-actions {
-    grid-column: 1 / -1;
-    justify-content: flex-end;
-  }
-
-  .file-actions .btn {
-    padding: 5px 10px;
-    font-size: 10px;
   }
 
   .empty-actions {
