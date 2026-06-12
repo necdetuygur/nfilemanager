@@ -4,7 +4,6 @@ const uploadBtn = document.getElementById('uploadBtn');
 const fileName = document.getElementById('fileName');
 const filesList = document.getElementById('filesList');
 const refreshBtn = document.getElementById('refreshBtn');
-const backBtn = document.getElementById('backBtn');
 
 const progressContainer = document.getElementById('progressContainer');
 const progressBar = document.getElementById('progressBar');
@@ -190,6 +189,10 @@ function renderFiles() {
   renderBreadcrumb();
 
   const sorted = getSortedFiles();
+  if (currentPath !== '/') {
+    const parentPath = currentPath.substring(0, currentPath.lastIndexOf('/')) || '/';
+    sorted.unshift({ name: '..', isDirectory: true, size: 0, modified: new Date().toISOString() });
+  }
   selectAllCheckbox.checked = sorted.length > 0 && selectedFiles.size === sorted.length;
 
   if (sorted.length === 0) {
@@ -208,18 +211,21 @@ function renderFiles() {
 
   filesList.innerHTML = sorted.map(file => {
     const isSelected = selectedFiles.has(file.name);
+    const isParent = file.name === '..';
     const fileUrl = (currentPath === '/' ? '' : currentPath) + '/' + file.name;
     const escapedName = file.name.replace(/'/g, "\\'");
     const isDir = file.isDirectory;
     const meta = isDir ? __t('folder') : formatFileSize(file.size);
-    const clickHandler = isDir ? `window.navigateTo('${fileUrl}')` : `window.viewFile('${escapedName}')`;
+    const clickHandler = isParent
+      ? `window.navigateTo('${currentPath.substring(0, currentPath.lastIndexOf('/')) || '/'}')`
+      : isDir ? `window.navigateTo('${fileUrl}')` : `window.viewFile('${escapedName}')`;
 
     return `
       <div class="file-item${isSelected ? ' selected' : ''}">
-        <input type="checkbox" class="file-checkbox" data-name="${escapedName}" ${isSelected ? 'checked' : ''} onchange="event.stopPropagation(); window.toggleFile('${escapedName}', this.checked)">
-        <div class="file-info clickable" onclick="${clickHandler}">
+        ${isParent ? '<div class="file-checkbox-placeholder"></div>' : `<input type="checkbox" class="file-checkbox" data-name="${escapedName}" ${isSelected ? 'checked' : ''} onchange="event.stopPropagation(); window.toggleFile('${escapedName}', this.checked)">`}
+        <div class="file-info${isDir ? ' clickable' : ''}" onclick="${clickHandler}">
           <div class="file-name">${isDir ? '📁' : '📄'} ${file.name}</div>
-          <div class="file-meta">${meta} - ${formatDate(file.modified)}</div>
+          <div class="file-meta">${meta}${!isParent ? ' - ' + formatDate(file.modified) : ''}</div>
         </div>
       </div>
     `;
@@ -229,8 +235,6 @@ function renderFiles() {
 }
 
 function loadFiles() {
-  backBtn.style.display = currentPath === '/' ? 'none' : 'inline-block';
-
   fetch('/files' + qs())
     .then(res => res.json())
     .then(files => {
@@ -508,11 +512,6 @@ fileInput.addEventListener('change', (e) => {
 
 uploadBtn.addEventListener('click', uploadFile);
 refreshBtn.addEventListener('click', () => loadFiles());
-
-backBtn.addEventListener('click', () => {
-  const parent = currentPath === '/' ? '/' : currentPath.substring(0, currentPath.lastIndexOf('/')) || '/';
-  navigateTo(parent);
-});
 
 selectAllCheckbox.addEventListener('change', (e) => {
   toggleSelectAll(e.target.checked);
