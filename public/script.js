@@ -355,7 +355,10 @@ function deleteFile(filename) {
 
   fetch('/delete/' + encodeURIComponent(filename) + qs(), { method: 'DELETE' })
     .then(res => res.json())
-    .then(() => loadFiles())
+    .then(() => {
+      selectedFiles.delete(filename);
+      loadFiles();
+    })
     .catch(() => alert(__t('deleteFailed')));
 }
 
@@ -369,7 +372,11 @@ function renameFile(filename) {
     body: JSON.stringify({ newname })
   })
     .then(res => res.json())
-    .then(() => loadFiles())
+    .then(() => {
+      selectedFiles.delete(filename);
+      if (selectedFiles.size === 0) updateToolbar();
+      loadFiles();
+    })
     .catch(() => alert(__t('renameFailed')));
 }
 

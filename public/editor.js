@@ -1,7 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const currentPath = params.get('path') || '/';
 const filename = params.get('file');
-let locale = localStorage.getItem('nfilemanager-locale') || 'tr';
+let locale = params.get('locale') || localStorage.getItem('nfilemanager-locale') || 'tr';
 let translations = {};
 
 const editorTitle = document.getElementById('editorTitle');
