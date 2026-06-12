@@ -13,7 +13,7 @@ body {
 }
 
 .container {
-  max-width: 900px;
+  max-width: 960px;
   margin: 0 auto;
   background: #1a2d3d;
   border-radius: 12px;
@@ -21,25 +21,14 @@ body {
   overflow: hidden;
 }
 
-header {
-  background: #112233;
-  color: #ffffff;
-  padding: 30px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 28px;
-  font-weight: 600;
-}
-
 .upload-section {
-  padding: 30px;
+  padding: 20px 30px;
   border-bottom: 2px solid #1e3040;
   display: flex;
   gap: 15px;
   align-items: center;
   flex-wrap: wrap;
+  position: relative;
 }
 
 .upload-box {
@@ -47,6 +36,7 @@ h1 {
   display: flex;
   gap: 15px;
   align-items: center;
+  min-width: 200px;
 }
 
 #fileName {
@@ -56,6 +46,27 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.lang-select {
+  background: #0f1a26;
+  color: #ffffff;
+  border: 1px solid #1e3040;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  margin-left: auto;
+}
+
+.lang-select:focus {
+  border-color: #3b82f6;
+}
+
+.lang-select option {
+  background: #1a2d3d;
+  color: #ffffff;
 }
 
 .btn {
@@ -73,7 +84,7 @@ h1 {
 }
 
 .btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
 }
 
@@ -95,29 +106,21 @@ h1 {
 .btn-danger {
   background: #f56565;
   color: white;
-  padding: 8px 16px;
-  font-size: 12px;
 }
 
 .btn-warning {
   background: #ed8936;
   color: white;
-  padding: 8px 16px;
-  font-size: 12px;
 }
 
 .btn-info {
   background: #4299e1;
   color: white;
-  padding: 8px 16px;
-  font-size: 12px;
 }
 
 .btn-view {
   background: #22c55e;
   color: white;
-  padding: 8px 16px;
-  font-size: 12px;
 }
 
 .progress-container {
@@ -156,14 +159,14 @@ h1 {
 }
 
 .files-section {
-  padding: 30px;
+  padding: 20px 30px;
 }
 
 .section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .header-actions {
@@ -171,14 +174,166 @@ h1 {
   gap: 8px;
 }
 
-.path-display {
-  color: #8899aa;
+h2 {
+  font-size: 20px;
+  color: #ffffff;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
   font-size: 13px;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   padding: 6px 12px;
   background: #0f1a26;
   border-radius: 6px;
   font-family: monospace;
+}
+
+.breadcrumb a {
+  color: #4299e1;
+  text-decoration: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+}
+
+.breadcrumb a:hover {
+  background: #1e3040;
+  text-decoration: underline;
+}
+
+.breadcrumb .separator {
+  color: #6a7a8a;
+  margin: 0 2px;
+}
+
+.breadcrumb .current {
+  color: #8899aa;
+  padding: 2px 4px;
+}
+
+.search-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.search-box {
+  flex: 1;
+  background: #0f1a26;
+  color: #ffffff;
+  border: 1px solid #1e3040;
+  border-radius: 6px;
+  padding: 10px 14px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box:focus {
+  border-color: #3b82f6;
+}
+
+.search-box::placeholder {
+  color: #6a7a8a;
+}
+
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 0;
+  background: #1a2d3d;
+  margin-bottom: 8px;
+}
+
+.toolbar-btn {
+  padding: 8px 14px;
+  font-size: 12px;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.sort-header {
+  display: flex;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6a7a8a;
+  background: #0f1a26;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  border: 1px solid #1e3040;
+  user-select: none;
+}
+
+.sort-btn {
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 4px;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sort-btn:hover {
+  color: #ffffff;
+  background: #1e3040;
+}
+
+.sort-btn.active {
+  color: #3b82f6;
+}
+
+.files-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.file-item {
+  background: #1a2d3d;
+  padding: 10px 12px;
+  border-radius: 8px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid #1e3040;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.file-item:hover {
+  border-color: #2a4a60;
+}
+
+.file-item.selected {
+  border-color: #3b82f6;
+  background: #1e3348;
+}
+
+.file-checkbox {
+  accent-color: #3b82f6;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
 }
 
 .file-info.clickable {
@@ -189,51 +344,32 @@ h1 {
   opacity: 0.8;
 }
 
-h2 {
-  font-size: 20px;
-  color: #ffffff;
-}
-
-.files-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.file-item {
-  background: #1a2d3d;
-  padding: 16px;
-  border-radius: 8px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border: 1px solid #1e3040;
-}
-
-.file-info {
-  flex: 1;
-}
-
 .file-name {
   font-weight: 600;
   color: #ffffff;
-  margin-bottom: 4px;
+  font-size: 14px;
   word-break: break-all;
 }
 
 .file-meta {
-  font-size: 12px;
+  font-size: 11px;
   color: #6a7a8a;
 }
 
 .file-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.file-actions .btn {
+  padding: 6px 12px;
+  font-size: 11px;
 }
 
 .empty-state {
   text-align: center;
-  padding: 60px 20px;
+  padding: 50px 20px;
   color: #6a7a8a;
 }
 
@@ -242,7 +378,22 @@ h2 {
   margin-bottom: 16px;
 }
 
-@media (max-width: 600px) {
+.empty-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.path-display {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  body {
+    padding: 10px;
+  }
+
   .upload-section {
     flex-direction: column;
     align-items: stretch;
@@ -253,14 +404,43 @@ h2 {
     align-items: stretch;
   }
 
+  .lang-select {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .toolbar {
+    gap: 4px;
+    padding: 8px 0;
+  }
+
+  .toolbar-btn {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+
+  .sort-header {
+    font-size: 11px;
+    overflow-x: auto;
+  }
+
   .file-item {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 12px;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
   }
 
   .file-actions {
-    width: 100%;
+    grid-column: 1 / -1;
     justify-content: flex-end;
+  }
+
+  .file-actions .btn {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .empty-actions {
+    flex-direction: column;
+    align-items: center;
   }
 }
