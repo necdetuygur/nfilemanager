@@ -268,10 +268,6 @@ body {
   white-space: nowrap;
 }
 
-.refresh-btn {
-  margin-left: auto;
-}
-
 .sort-header {
   display: flex;
   gap: 4px;
@@ -303,6 +299,23 @@ body {
 
 .sort-btn.active {
   color: #3b82f6;
+}
+
+.sort-refresh-btn {
+  margin-left: auto;
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  border: none;
+  background: transparent;
+  color: #6a7a8a;
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.sort-refresh-btn:hover {
+  color: #ffffff;
+  background: #1e3040;
 }
 
 .files-list {

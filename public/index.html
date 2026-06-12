@@ -29,8 +29,6 @@
 
       <div class="files-section">
         <div class="sticky-header">
-          <div id="breadcrumb" class="breadcrumb"></div>
-
           <div class="search-row">
             <input type="checkbox" id="selectAllCheckbox" class="file-checkbox" title="Select All" />
             <input type="text" id="searchInput" class="search-box" placeholder="🔍 Ara..." data-i18n-placeholder="search" />
@@ -47,8 +45,9 @@
             <button class="btn btn-view toolbar-btn" id="viewBtn" onclick="window.viewSelected()" disabled data-i18n="view">👁️ View</button>
             <button class="btn btn-info toolbar-btn" id="downloadBtn" onclick="window.downloadSelected()" disabled data-i18n="download">⬇️ Download</button>
             <button class="btn btn-danger toolbar-btn" id="removeBtn" onclick="window.removeSelected()" disabled data-i18n="remove">🗑️ Remove</button>
-            <button id="refreshBtn" class="btn btn-secondary toolbar-btn refresh-btn" data-i18n="refresh">🔄 Yenile</button>
           </div>
+
+          <div id="breadcrumb" class="breadcrumb"></div>
         </div>
 
         <div class="sort-header">
@@ -56,6 +55,7 @@
           <span class="sort-btn" data-sort="size" data-i18n="size">Boyut</span>
           <span class="sort-btn" data-sort="type" data-i18n="type">Tür</span>
           <span class="sort-btn" data-sort="date" data-i18n="date">Tarih</span>
+          <button id="refreshBtn" class="btn sort-refresh-btn" data-i18n="refresh">🔄 Yenile</button>
         </div>
 
         <div id="filesList" class="files-list"></div>
