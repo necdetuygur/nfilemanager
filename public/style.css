@@ -409,9 +409,13 @@ h2 {
     width: 100%;
   }
 
+  .files-section {
+    padding: 12px;
+  }
+
   .toolbar {
     gap: 4px;
-    padding: 8px 0;
+    padding: 6px 0;
   }
 
   .toolbar-btn {
