@@ -540,6 +540,22 @@ document.querySelector('.sort-header').addEventListener('click', (e) => {
   renderFiles();
 });
 
+const setEmojiFavicon = (emoji = "🔍") => {
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, 64, 64);
+  ctx.font = "56px serif";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(emoji, 32, 36);
+  const favicon = document.getElementById("dynamic-favicon");
+  favicon.href = canvas.toDataURL("image/png");
+}
+
+window.addEventListener('load', () => setEmojiFavicon('📁'));
+
 window.toggleFile = toggleFile;
 window.navigateTo = navigateTo;
 window.viewFile = viewFile;
