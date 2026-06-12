@@ -147,6 +147,133 @@ app.put("/rename/:filename", (req, res) => {
   });
 });
 
+app.post("/mkdir", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: "İsim gerekli" });
+  const dirPath = path.join(targetDir, name);
+  if (fs.existsSync(dirPath)) return res.status(400).json({ error: "Bu isimde dosya/klasör zaten var" });
+  fs.mkdir(dirPath, { recursive: false }, (err) => {
+    if (err) return res.status(500).json({ error: "Klasör oluşturulamadı" });
+    res.json({ success: true, name });
+  });
+});
+
+app.post("/touch", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: "İsim gerekli" });
+  const filePath = path.join(targetDir, name);
+  if (fs.existsSync(filePath)) return res.status(400).json({ error: "Bu isimde dosya/klasör zaten var" });
+  fs.writeFile(filePath, "", (err) => {
+    if (err) return res.status(500).json({ error: "Dosya oluşturulamadı" });
+    res.json({ success: true, name });
+  });
+});
+
+function copyRecursive(src, dest) {
+  const stat = fs.statSync(src);
+  if (stat.isDirectory()) {
+    fs.mkdirSync(dest, { recursive: true });
+    const entries = fs.readdirSync(src);
+    for (const entry of entries) {
+      copyRecursive(path.join(src, entry), path.join(dest, entry));
+    }
+  } else {
+    fs.copyFileSync(src, dest);
+  }
+}
+
+app.post("/copy", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const { names, destination } = req.body;
+  if (!names || !Array.isArray(names) || names.length === 0) return res.status(400).json({ error: "Dosya listesi gerekli" });
+  if (!destination) return res.status(400).json({ error: "Hedef dizin gerekli" });
+  const destDir = safePath(destination);
+  if (!destDir) return res.status(400).json({ error: "Geçersiz hedef dizin" });
+  if (!fs.existsSync(destDir)) return res.status(400).json({ error: "Hedef dizin mevcut değil" });
+  const errors = [];
+  for (const name of names) {
+    const srcPath = path.join(targetDir, name);
+    const destPath = path.join(destDir, name);
+    if (!fs.existsSync(srcPath)) { errors.push(name); continue; }
+    try {
+      copyRecursive(srcPath, destPath);
+    } catch (e) { errors.push(name); }
+  }
+  res.json({ success: errors.length === 0, errors });
+});
+
+app.post("/move", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const { names, destination } = req.body;
+  if (!names || !Array.isArray(names) || names.length === 0) return res.status(400).json({ error: "Dosya listesi gerekli" });
+  if (!destination) return res.status(400).json({ error: "Hedef dizin gerekli" });
+  const destDir = safePath(destination);
+  if (!destDir) return res.status(400).json({ error: "Geçersiz hedef dizin" });
+  if (!fs.existsSync(destDir)) return res.status(400).json({ error: "Hedef dizin mevcut değil" });
+  const errors = [];
+  for (const name of names) {
+    const srcPath = path.join(targetDir, name);
+    const destPath = path.join(destDir, name);
+    if (!fs.existsSync(srcPath)) { errors.push(name); continue; }
+    try {
+      fs.renameSync(srcPath, destPath);
+    } catch (e) { errors.push(name); }
+  }
+  res.json({ success: errors.length === 0, errors });
+});
+
+app.post("/bulk-delete", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const { names } = req.body;
+  if (!names || !Array.isArray(names) || names.length === 0) return res.status(400).json({ error: "Dosya listesi gerekli" });
+  const errors = [];
+  for (const name of names) {
+    const filepath = path.join(targetDir, name);
+    if (!fs.existsSync(filepath)) { errors.push(name); continue; }
+    try {
+      const stat = fs.statSync(filepath);
+      const removeFn = stat.isDirectory() ? fs.rmSync : fs.unlinkSync;
+      removeFn(filepath, { recursive: true });
+    } catch (e) { errors.push(name); }
+  }
+  res.json({ success: errors.length === 0, errors });
+});
+
+app.get("/read/:filename", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const filepath = path.join(targetDir, req.params.filename);
+  if (!fs.existsSync(filepath)) return res.status(404).json({ error: "Dosya bulunamadı" });
+  const stat = fs.statSync(filepath);
+  if (stat.isDirectory()) return res.status(400).json({ error: "Klasör okunamaz" });
+  try {
+    const content = fs.readFileSync(filepath, "utf-8");
+    res.json({ success: true, content });
+  } catch (e) {
+    res.status(500).json({ error: "Dosya okunamadı" });
+  }
+});
+
+app.post("/save/:filename", (req, res) => {
+  const targetDir = safePath(req.query.path);
+  if (!targetDir) return res.status(400).json({ error: "Geçersiz dizin" });
+  const filepath = path.join(targetDir, req.params.filename);
+  if (req.body.content === undefined) return res.status(400).json({ error: "İçerik gerekli" });
+  try {
+    fs.writeFileSync(filepath, String(req.body.content), "utf-8");
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: "Dosya kaydedilemedi" });
+  }
+});
+
 app.listen(port, () => {
   console.log(`\n🚀 Dosya Yöneticisi başlatıldı!`);
   console.log(`📂 Dosya dizini: ${uploadDir}`);
