@@ -1,0 +1,74 @@
+.editor-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 90vh;
+  padding: 0;
+  overflow: hidden;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-bottom: 2px solid #1e3040;
+}
+
+.editor-body {
+  flex: 1;
+  padding: 20px 30px;
+  display: flex;
+}
+
+#editorContent {
+  flex: 1;
+  background: #0f1a26;
+  color: #e0e0e0;
+  border: 1px solid #1e3040;
+  border-radius: 8px;
+  padding: 20px;
+  font-family: 'Cascadia Code', 'Fira Code', 'JetBrains Mono', 'Consolas', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+}
+
+#editorContent:focus {
+  border-color: #3b82f6;
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 30px;
+  border-top: 2px solid #1e3040;
+}
+
+.editor-status {
+  color: #6a7a8a;
+  font-size: 13px;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 12px;
+}
+
+@media (max-width: 600px) {
+  .editor-header {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+
+  .editor-body {
+    padding: 12px;
+  }
+
+  .editor-footer {
+    flex-direction: column;
+    gap: 12px;
+  }
+}
